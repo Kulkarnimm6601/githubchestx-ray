@@ -1,0 +1,19 @@
+def define_model(self):
+        model = Sequential()
+        model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(64, 64, 1)))
+        model.add(MaxPooling2D(2, 2))
+        model.add(Conv2D(32, (3, 3), activation='relu'))
+        model.add(MaxPooling2D(2, 2))
+        model.add(Flatten())
+        model.add(Dense(128, activation='relu'))
+        model.add(Dense(1, activation='sigmoid'))
+        model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+        return model
+        
+        def deploy_model(self):
+        self.train_model()
+        loss, acc = self.model.evaluate_generator(self.test,
+                                                  steps=self.test.samples // self.test.batch_size)
+        logger.info('Model has been trained with loss, accuracy of {}, {}'.format(loss, acc))
+        self.model.save_weights(os.path.join(self.model_path, 'weights.h5'))
+        logger.info('Model weights have been saved to {}'.format(self.model_path))
